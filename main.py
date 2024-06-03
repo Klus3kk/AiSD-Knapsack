@@ -26,13 +26,14 @@ def process_command(command):
     elif cmd == 'load':
         filename = input('Nazwa pliku do załadowania danych: ')
         global data
-        data['C'], data['n'], data['weights'], data['values'], data['items'] = load_knapsack_data(filename)
+        data['C'], data['n'], data['weights'], data['values'], _ = load_knapsack_data(filename)
+        data['items'] = music_items[:data['n']]  # Przechowujemy opisy przedmiotów
         print(f"Dane załadowane z {filename}")
     elif cmd == 'run':
         if 'C' in data and 'n' in data and 'values' in data and 'weights' in data and 'items' in data:
             time_dynamic, time_brute_force = measure_performance(data['C'], data['weights'], data['values'], data['n'], data['items'])
-            print(f"Czas dla programowania dynamicznego: {time_dynamic}")
-            print(f"Czas dla brute force: {time_brute_force}")
+            print(f"\nCzas dla programowania dynamicznego: {time_dynamic:.6f} sekund")
+            print(f"Czas dla brute force: {time_brute_force:.6f} sekund")
         else:
             print("Dane nie zostały załadowane. Użyj polecenia 'Load' najpierw.")
     elif cmd == 'exit':

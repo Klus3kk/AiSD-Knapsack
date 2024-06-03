@@ -10,10 +10,24 @@ music_items = [
     ("Kostka do gitary", 1, 5),
     ("Plakat", 1, 30),
     ("Słuchawki", 2, 70),
-    ("Głośnik", 3, 80)
+    ("Głośnik", 3, 80),
+    ("Mikrofon", 2, 40),
+    ("Mikserek", 3, 90),
+    ("Stroik", 1, 10),
+    ("Tamburyn", 1, 25),
+    ("Klarnet", 2, 60),
+    ("Gitara", 4, 120),
+    ("Keyboard", 5, 150),
+    ("Bębny", 6, 200),
+    ("Saksofon", 3, 85),
+    ("Perkusja", 10, 300),
+    ("Zestaw płyt CD", 2, 35)
 ]
 
 def generate_knapsack_data(filename, n, C):
+    if n > len(music_items):
+        raise ValueError("Liczba przedmiotów przekracza liczbę dostępnych przedmiotów.")
+    
     selected_items = random.sample(music_items, n)
     with open(filename, 'w') as f:
         f.write(f"{C}\n")
@@ -65,7 +79,7 @@ def knapsack_brute_force(C, weights, values, n):
                 best_combination = combo
     return max_value, best_combination
 
-def measure_performance(C, weights, values, n, items):
+def measure_performance(C, weights, values, n, item_names):
     import time
 
     start_time = time.time()
@@ -76,20 +90,20 @@ def measure_performance(C, weights, values, n, items):
     result_brute_force, selected_items_brute_force = knapsack_brute_force(C, weights, values, n)
     time_brute_force = time.time() - start_time
 
-    print("\nDynamic Programming Results:")
-    display_selected_items(items, selected_items_dynamic, weights, values)
+    print("\nWyniki Programowania Dynamicznego:")
+    display_selected_items(item_names, selected_items_dynamic, weights, values)
     
-    print("\nBrute Force Results:")
-    display_selected_items(items, selected_items_brute_force, weights, values)
+    print("\nWyniki Brute Force:")
+    display_selected_items(item_names, selected_items_brute_force, weights, values)
 
     return time_dynamic, time_brute_force
 
-def display_selected_items(items, selected_indices, weights, values):
+def display_selected_items(item_names, selected_indices, weights, values):
     print("Wybrane przedmioty:")
     total_weight = 0
     total_value = 0
     for index in selected_indices:
-        item = items[index]
+        item = item_names[index]
         weight = weights[index]
         value = values[index]
         total_weight += weight
