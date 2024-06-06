@@ -83,11 +83,11 @@ def measure_performance(C, weights, values, n, item_names):
     import time
 
     start_time = time.time()
-    result_dynamic, selected_items_dynamic = knapsack_dynamic(C, weights, values, n)
+    selected_items_dynamic = knapsack_dynamic(C, weights, values, n)
     time_dynamic = time.time() - start_time
 
     start_time = time.time()
-    result_brute_force, selected_items_brute_force = knapsack_brute_force(C, weights, values, n)
+    selected_items_brute_force = knapsack_brute_force(C, weights, values, n)
     time_brute_force = time.time() - start_time
 
     print("\nWyniki Programowania Dynamicznego:")
