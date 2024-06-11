@@ -27,7 +27,13 @@ music_items = [
 def generate_knapsack_data(filename, n, C):
     if n > len(music_items):
         raise ValueError("Liczba przedmiotów przekracza liczbę dostępnych przedmiotów.")
-    
+
+    # Oblicz maksymalną możliwą pojemność plecaka
+    max_possible_capacity = sum([item[1] for item in music_items])
+
+    if C > max_possible_capacity:
+        raise ValueError(f"Pojemność plecaka ({C}) przekracza maksymalną możliwą pojemność ({max_possible_capacity}).")
+
     selected_items = random.sample(music_items, n)
     with open(filename, 'w') as f:
         f.write(f"{C}\n")
@@ -54,7 +60,8 @@ def knapsack_dynamic(C, weights, values, n):
                 K[i][w] = max(values[i-1] + K[i-1][w-weights[i-1]], K[i-1][w])
             else:
                 K[i][w] = K[i-1][w]
-    return K[n][C], get_selected_items_dynamic(K, weights, n, C)
+    max_value = K[n][C]  
+    return max_value, get_selected_items_dynamic(K, weights, n, C)
 
 def get_selected_items_dynamic(K, weights, n, C):
     selected_items = []
@@ -91,18 +98,26 @@ def measure_performance(C, weights, values, n, item_names):
     time_brute_force = time.time() - start_time
 
     print("\nWyniki Programowania Dynamicznego:")
-    display_selected_items(item_names, selected_items_dynamic, weights, values)
-    
+    max_value_dynamic, selected_items_dynamic = knapsack_dynamic(C, weights, values, n) 
+    display_selected_items(item_names, selected_items_dynamic, weights, values, max_value_dynamic)
+
     print("\nWyniki Brute Force:")
-    display_selected_items(item_names, selected_items_brute_force, weights, values)
+    max_value_brute_force, selected_items_brute_force = knapsack_brute_force(C, weights, values, n) 
+    display_selected_items(item_names, selected_items_brute_force, weights, values, max_value_brute_force) # Pass max_value_brute_force
 
     return time_dynamic, time_brute_force
 
-def display_selected_items(item_names, selected_indices, weights, values):
+def display_selected_items(item_names, selected_indices, weights, values, max_value):
+    if not selected_indices: 
+        print("Nie znaleziono przedmiotów spełniających kryteria.")
+        return
+
     print("Wybrane przedmioty:")
     total_weight = 0
     total_value = 0
     for index in selected_indices:
+        if index < 0 or index >= len(item_names):
+            raise ValueError(f"Invalid item index: {index}")  # Explicit error for debugging
         item = item_names[index]
         weight = weights[index]
         value = values[index]
