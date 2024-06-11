@@ -28,7 +28,6 @@ def generate_knapsack_data(filename, n, C):
     if n > len(music_items):
         raise ValueError("Liczba przedmiotów przekracza liczbę dostępnych przedmiotów.")
 
-    # Oblicz maksymalną możliwą pojemność plecaka
     max_possible_capacity = sum([item[1] for item in music_items])
 
     if C > max_possible_capacity:

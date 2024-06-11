@@ -23,21 +23,20 @@ def process_command(command):
         else:
             filename = input('Nazwa pliku wyjściowego: ')
 
-        # Sprawdzenie ograniczeń PRZED pytaniem o dane
         max_items = len(music_items)
         max_capacity = sum([item[1] for item in music_items])
 
-        while True:  # Pętla, dopóki nie podamy poprawnych danych
+        while True:  
             try:
                 n = int(input(f'Liczba przedmiotów (max {max_items}): '))
-                if not (1 <= n <= max_items):  # Sprawdzamy zakres
+                if not (1 <= n <= max_items):  
                     raise ValueError(f"Liczba przedmiotów musi być z zakresu 1-{max_items}")
 
                 C = int(input(f'Pojemność plecaka (max {max_capacity}): '))
-                if not (1 <= C <= max_capacity):  # Sprawdzamy zakres
+                if not (1 <= C <= max_capacity): 
                     raise ValueError(f"Pojemność plecaka musi być z zakresu 1-{max_capacity}")
 
-                break  # Wychodzimy z pętli, jeśli dane są poprawne
+                break  
             except ValueError as e:
                 print(f"Błąd: {e}")
 
@@ -49,7 +48,6 @@ def process_command(command):
         else:
             filename = input('Nazwa pliku do załadowania danych: ')
 
-        # Upewniamy się, że plik ma rozszerzenie .txt
         if not filename.endswith('.txt'):
             filename += '.txt'
 
