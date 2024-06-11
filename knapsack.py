@@ -35,6 +35,8 @@ def generate_knapsack_data(filename, n, C):
         raise ValueError(f"Pojemność plecaka ({C}) przekracza maksymalną możliwą pojemność ({max_possible_capacity}).")
 
     selected_items = random.sample(music_items, n)
+    if not filename.endswith('.txt'):
+        filename += '.txt'
     with open(filename, 'w') as f:
         f.write(f"{C}\n")
         f.write(f"{n}\n")
